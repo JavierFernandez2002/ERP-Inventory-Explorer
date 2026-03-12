@@ -6,6 +6,7 @@ const {
     filterByStock,
     sortProducts,
 } = require('../utils/products.utils');
+const { getCountryInfo } = require("./countries.service");
 
 const PRODUCTS_FILE = path.join(__dirname, '../..', 'data', 'products.json');
 
@@ -34,7 +35,18 @@ async function getAllProducts(query = {}) {
 
 async function getProductDetail(id) {
     const products = await readProductsFile();
-    return products.find(product => product.id === parseInt(id)) || null;
+    const product = products.find(p => p.id === id);
+
+    if (!product) {
+        return null;
+    }
+
+    const country = await getCountryInfo(product.countryCode);
+
+    return {
+        ...product,
+        country
+    };
 }
 
 module.exports = {
