@@ -29,8 +29,19 @@ async function getProductById(req, res) {
     }
 }
 
+async function getStats(req, res) {
+    try {
+        const stats = await getInventoryStats();
+        res.json(stats);
+    } catch (error) {
+        console.error('Error fetching inventory stats:', error);
+        res.status(500).json({ error: 'Failed to fetch inventory stats' });
+    }
+}
+
 
 module.exports = {
     getProducts,
     getProductById,
+    getStats
 };

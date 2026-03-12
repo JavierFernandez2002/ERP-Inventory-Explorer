@@ -49,8 +49,23 @@ async function getProductDetail(id) {
     };
 }
 
+async function getInventoryStats(){
+    const products = await readProductsFile();
+    const totalProducts = products.length;
+    const lowStockProducts = products.filter(p => p.stock < 5).length;
+    const totalPrice = products.reduce((sum, p) => sum + p.price, 0);
+    const averagePrice = totalProducts > 0 ? (totalPrice / totalProducts).toFixed(2) : 0;
+
+    return {
+        totalProducts,
+        lowStockProducts,
+        totalPrice,
+        averagePrice
+    };
+}
+
 module.exports = {
     getAllProducts,
     getProductDetail,
-    readProductsFile
+    getInventoryStats
 };
