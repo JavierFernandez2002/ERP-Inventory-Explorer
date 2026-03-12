@@ -1,0 +1,182 @@
+[
+  {
+    "id": 1,
+    "name": "Notebook Lenovo IdeaPad 5",
+    "category": "Laptops",
+    "price": 1200,
+    "stock": 8,
+    "supplier": "TechDistrib",
+    "countryCode": "AR"
+  },
+  {
+    "id": 2,
+    "name": "Dell Inspiron 15",
+    "category": "Laptops",
+    "price": 1350,
+    "stock": 4,
+    "supplier": "Andes Systems",
+    "countryCode": "CL"
+  },
+  {
+    "id": 3,
+    "name": "HP Pavilion 14",
+    "category": "Laptops",
+    "price": 1100,
+    "stock": 2,
+    "supplier": "Latam Hardware",
+    "countryCode": "BR"
+  },
+  {
+    "id": 4,
+    "name": "Samsung 24 inch Monitor",
+    "category": "Monitors",
+    "price": 210,
+    "stock": 10,
+    "supplier": "Display World",
+    "countryCode": "MX"
+  },
+  {
+    "id": 5,
+    "name": "LG UltraWide 29",
+    "category": "Monitors",
+    "price": 340,
+    "stock": 6,
+    "supplier": "Display World",
+    "countryCode": "US"
+  },
+  {
+    "id": 6,
+    "name": "AOC 22 inch Monitor",
+    "category": "Monitors",
+    "price": 180,
+    "stock": 1,
+    "supplier": "Vision Tech",
+    "countryCode": "AR"
+  },
+  {
+    "id": 7,
+    "name": "TP-Link Archer C6 Router",
+    "category": "Networking",
+    "price": 75,
+    "stock": 14,
+    "supplier": "Net Solutions",
+    "countryCode": "BR"
+  },
+  {
+    "id": 8,
+    "name": "Ubiquiti UniFi Access Point",
+    "category": "Networking",
+    "price": 160,
+    "stock": 5,
+    "supplier": "Net Solutions",
+    "countryCode": "US"
+  },
+  {
+    "id": 9,
+    "name": "Mercusys 8-Port Switch",
+    "category": "Networking",
+    "price": 45,
+    "stock": 12,
+    "supplier": "InfraStore",
+    "countryCode": "CL"
+  },
+  {
+    "id": 10,
+    "name": "Kingston SSD 1TB",
+    "category": "Storage",
+    "price": 95,
+    "stock": 15,
+    "supplier": "StorageHub",
+    "countryCode": "US"
+  },
+  {
+    "id": 11,
+    "name": "WD Blue 2TB HDD",
+    "category": "Storage",
+    "price": 80,
+    "stock": 7,
+    "supplier": "StorageHub",
+    "countryCode": "MX"
+  },
+  {
+    "id": 12,
+    "name": "SanDisk USB 64GB",
+    "category": "Storage",
+    "price": 18,
+    "stock": 25,
+    "supplier": "Quick Devices",
+    "countryCode": "AR"
+  },
+  {
+    "id": 13,
+    "name": "Logitech MX Master 3S",
+    "category": "Accessories",
+    "price": 120,
+    "stock": 9,
+    "supplier": "Office Gear",
+    "countryCode": "US"
+  },
+  {
+    "id": 14,
+    "name": "Redragon K552 Keyboard",
+    "category": "Accessories",
+    "price": 55,
+    "stock": 13,
+    "supplier": "Office Gear",
+    "countryCode": "BR"
+  },
+  {
+    "id": 15,
+    "name": "Logitech C920 Webcam",
+    "category": "Accessories",
+    "price": 85,
+    "stock": 3,
+    "supplier": "Office Gear",
+    "countryCode": "CL"
+  },
+  {
+    "id": 16,
+    "name": "Cisco Small Business Router",
+    "category": "Networking",
+    "price": 220,
+    "stock": 2,
+    "supplier": "InfraStore",
+    "countryCode": "US"
+  },
+  {
+    "id": 17,
+    "name": "Acer Aspire 3",
+    "category": "Laptops",
+    "price": 980,
+    "stock": 11,
+    "supplier": "Latam Hardware",
+    "countryCode": "MX"
+  },
+  {
+    "id": 18,
+    "name": "ViewSonic 27 inch Monitor",
+    "category": "Monitors",
+    "price": 290,
+    "stock": 4,
+    "supplier": "Vision Tech",
+    "countryCode": "BR"
+  },
+  {
+    "id": 19,
+    "name": "Seagate External Drive 1TB",
+    "category": "Storage",
+    "price": 70,
+    "stock": 6,
+    "supplier": "Quick Devices",
+    "countryCode": "CL"
+  },
+  {
+    "id": 20,
+    "name": "USB-C Docking Station",
+    "category": "Accessories",
+    "price": 150,
+    "stock": 5,
+    "supplier": "TechDistrib",
+    "countryCode": "AR"
+  }
+]
