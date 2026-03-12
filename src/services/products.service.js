@@ -32,7 +32,13 @@ async function getAllProducts(query = {}) {
     return products;
 }
 
+async function getProductDetail(id) {
+    const products = await readProductsFile();
+    return products.find(product => product.id === parseInt(id)) || null;
+}
+
 module.exports = {
     getAllProducts,
+    getProductDetail,
     readProductsFile
 };

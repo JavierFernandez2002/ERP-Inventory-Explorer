@@ -15,7 +15,22 @@ async function getProducts(req, res) {
     }
 }
 
+async function getProductById(req, res) {
+    try{
+        const productId = Number(req.params.id);
+        const product = await getProductDetail(productId);
+        if (!product) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+        res.json(product);
+    } catch (error) {
+        console.error('Error fetching product:', error);
+        res.status(500).json({ error: 'Failed to fetch product' });
+    }
+}
+
 
 module.exports = {
     getProducts,
+    getProductById,
 };
