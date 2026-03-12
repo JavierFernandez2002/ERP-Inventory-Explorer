@@ -178,5 +178,14 @@
     "stock": 5,
     "supplier": "TechDistrib",
     "countryCode": "AR"
+  },
+  {
+    "id": 21,
+    "name": "ASUS ROG Strix G15",
+    "category": "Laptops",
+    "price": 1500,
+    "stock": 0,
+    "supplier": "Andes Systems",
+    "countryCode": "CL"
   }
 ]
