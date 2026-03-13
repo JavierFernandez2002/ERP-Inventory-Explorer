@@ -28,15 +28,16 @@
             </select>
 
             <select id="sortSelect">
+                <option value=""> Sort By</option>
                 <option value="name-asc">Name (A-Z)</option>
                 <option value="name-desc">Name (Z-A)</option>
                 <option value="price-asc">Price (Low to High)</option>
                 <option value="price-desc">Price (High to Low)</option>
             </select>
 
-            <label>
+            <label class="checkbox-label">
                 <input type="checkbox" id="inStockCheckbox" />
-                Show In-Stock Only
+                Only products in stock
             </label>
 
             <button id="applyFiltersBtn">Apply Filters</button>
@@ -46,13 +47,16 @@
         <section class="content">
             <div class="products-section">
                 <h2>Products</h2>
-                <div id="productsContainer"></div>
+                <div id="productsContainer" class="products-grid"></div>
             </div>
 
             <aside class="details-section">
                 <h2>Product Details</h2>
-                <div id="productDetailsContainer">
-                    <p>Select a product to see details.</p>
+                <div id="productDetailsContainer" class="detail-content">
+                    <div class="detail-placeholder">
+                        Select a product from the catalog to view enriched details, supplier country and stock
+                        information.
+                    </div>
                 </div>
             </aside>
         </section>
@@ -60,4 +64,5 @@
 
     <script src="app.js"></script>
 </body>
+
 </html>

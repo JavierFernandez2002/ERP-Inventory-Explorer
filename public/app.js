@@ -1,5 +1,5 @@
 const productsContainer = document.getElementById('productsContainer');
-const productDetail = document.getElementById('productDetail');
+const productDetail = document.getElementById('productDetailsContainer');
 
 const searchInput = document.getElementById('searchInput');
 const categorySelect = document.getElementById('categorySelect');
@@ -32,36 +32,95 @@ async function fetchProducts() {
 
 function renderProducts(products) {
     productsContainer.innerHTML = products
-        .map(product => `
-            <div class="product-card">
-                <h3>${product.name}</h3>
-                <p>Category: ${product.category}</p>
-                <p>Price: $${product.price.toFixed(2)}</p>
-                <p>Stock: ${product.stock}</p>
-                <button onclick="fetchProductDetail(${product.id})">View Details</button>
-            </div>
-        `)
-        .join('');
+        .map((product) => {
+            const stockClass = product.stock <= 5 ? "stock-low" : "stock-ok";
+            const stockLabel = product.stock <= 5 ? "Low stock" : "Available";
+
+            return `
+                <div class="product-card">
+                    <h3>${product.name}</h3>
+
+                <div class="product-meta">
+                    <span><strong>Category:</strong> ${product.category}</span>
+                    <span><strong>Supplier:</strong> ${product.supplier}</span>
+                </div>
+
+                <div class="product-price">$${product.price}</div>
+
+                <span class="stock-badge ${stockClass}">
+                    ${stockLabel} · ${product.stock} units
+                </span>
+
+                <button onclick="fetchProductDetail(${product.id})">View detail</button>
+                </div>
+            `;
+        })
+        .join("");
 }
 
 async function fetchProductDetail(id) {
     try {
         const response = await fetch(`/api/products/${id}`);
         const product = await response.json();
-        
-        productDetail.innerHTML = `
-            <h3>${product.name}</h3>
-            <p>Category: ${product.category}</p>
-            <p>Price: $${product.price.toFixed(2)}</p>
-            <p>Stock: ${product.stock}</p>
-            <p>Supplier: ${product.supplier}</p>
-            <p>Country: ${product.country.name}</p>
-            <p>Region: ${product.country.region}</p>
-            ${product.country.flag ? `<img src="${product.country.flag}" alt="flag" width="80"/>` : ''}
-        `;
+
+        renderProductDetail(product);
     } catch (error) {
         console.error('Error fetching product detail:', error);
     }
+}
+
+function renderProductDetail(product) {
+  productDetail.innerHTML = `
+    <div class="detail-card">
+      <h3>${product.name}</h3>
+
+      <div class="detail-grid">
+        <div class="detail-item">
+          <span class="detail-label">Category</span>
+          <span class="detail-value">${product.category}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Price</span>
+          <span class="detail-value">$${product.price}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Stock</span>
+          <span class="detail-value">${product.stock} units</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Supplier</span>
+          <span class="detail-value">${product.supplier}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Country</span>
+          <span class="detail-value">${product.country.name}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Region</span>
+          <span class="detail-value">${product.country.region}</span>
+        </div>
+      </div>
+
+      ${
+        product.country.flag
+          ? `
+            <div class="flag-wrapper">
+              <img src="${product.country.flag}" alt="Flag of ${product.country.name}" />
+              <div>
+                <span class="detail-label">Supplier country flag</span>
+                <span class="detail-value">${product.country.name}</span>
+              </div>
+            </div>
+          `
+          : ""
+      }
+    </div>
+  `;
 }
 
 function clearFilters() {
