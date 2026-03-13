@@ -1,6 +1,10 @@
 const productsContainer = document.getElementById('productsContainer');
 const productDetail = document.getElementById('productDetailsContainer');
 
+const paginationControls = document.getElementById('paginationControls');
+let currentPage = 1;
+let pageSize = 6;
+
 const searchInput = document.getElementById('searchInput');
 const categorySelect = document.getElementById('categorySelect');
 const sortSelect = document.getElementById('sortSelect');
@@ -9,24 +13,32 @@ const applyFiltersBtn = document.getElementById('applyFiltersBtn');
 const clearFiltersBtn = document.getElementById('clearFiltersBtn');
 const statsSection = document.getElementById('statsSection');
 
-async function fetchProducts() {
+async function fetchProducts(page = 1) {
+  currentPage = page;
   productsContainer.innerHTML = `<div class="loading-state">Loading products...</div>`;
+  
   const search = searchInput.value.trim();
   const category = categorySelect.value;
   const inStock = inStockCheckbox.checked;
+  
   const [sortBy, order] = sortSelect.value.split('-');
 
   const params = new URLSearchParams();
+  
   if (search) params.append('search', search);
   if (category) params.append('category', category);
   if (inStock) params.append('inStock', 'true');
   if (sortBy) params.append('sortBy', sortBy);
   if (order) params.append('order', order);
 
+  params.append('page', currentPage);
+  params.append('limit', pageSize);
+
   try {
     const response = await fetch(`/api/products?${params.toString()}`);
     const products = await response.json();
-    renderProducts(products);
+    renderProducts(products.data);
+    renderPagination(products.pagination);
   } catch (error) {
     console.error('Error fetching products:', error);
     productsContainer.innerHTML = `
@@ -68,6 +80,21 @@ function renderProducts(products) {
             `;
     })
     .join("");
+}
+
+function renderPagination(pagination) {
+  const { page, totalPages } = pagination;
+
+  if (totalPages <= 1) {
+    paginationControls.innerHTML = '';
+    return;
+  }
+
+  paginationControls.innerHTML = `
+    <button ${page === 1 ? 'disabled' : ''} onclick="fetchProducts(${page - 1})">Previous</button>
+    <span>Page ${page} of ${totalPages}</span>
+    <button ${page === totalPages ? 'disabled' : ''} onclick="fetchProducts(${page + 1})">Next</button>
+  `;
 }
 
 async function fetchProductDetail(id) {
@@ -162,7 +189,7 @@ function clearFilters() {
   categorySelect.value = '';
   sortSelect.value = '';
   inStockCheckbox.checked = false;
-  fetchProducts();
+  fetchProducts(1);
 }
 
 async function fetchStats() {
@@ -206,9 +233,9 @@ function renderStats(stats) {
 }
 
 
-applyFiltersBtn.addEventListener('click', fetchProducts);
+applyFiltersBtn.addEventListener('click', () => fetchProducts(1));
 clearFiltersBtn.addEventListener('click', clearFilters);
 
 // Initial fetchs
 fetchStats();
-fetchProducts();
+fetchProducts(1);

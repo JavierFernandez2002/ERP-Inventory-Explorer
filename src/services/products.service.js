@@ -22,7 +22,7 @@ async function readProductsFile() {
 
 
 async function getAllProducts(query = {}) {
-    const { search, category, inStock, sortBy, order } = query;
+    const { search, category, inStock, sortBy, order, page=1, limit=6 } = query;
     let products = await readProductsFile();
 
     products = searchProducts(products, search);
@@ -30,7 +30,25 @@ async function getAllProducts(query = {}) {
     products = filterByStock(products, inStock);
     products = sortProducts(products, sortBy, order);
 
-    return products;
+    const currentPage = Number(page);
+    const pageSize = Number(limit);
+
+    const totalItems = products.length;
+    const totalPages = Math.ceil(totalItems / pageSize) || 1;
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+
+    const paginatedProducts = products.slice(startIndex, endIndex);
+
+    return {
+        data: paginatedProducts,
+        pagination: {
+            page: currentPage,
+            limit: pageSize,
+            totalItems,
+            totalPages
+        }
+    };
 }
 
 async function getProductDetail(id) {

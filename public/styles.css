@@ -363,6 +363,35 @@ body {
   color: #dc2626;
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 0 20px 20px;
+}
+
+.pagination button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 10px;
+  background: var(--primary);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.pagination button:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  color: var(--muted);
+  font-weight: 600;
+}
+
 @media (max-width: 900px) {
   .content {
     grid-template-columns: 1fr;
