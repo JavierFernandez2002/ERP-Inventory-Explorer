@@ -10,6 +10,7 @@ const clearFiltersBtn = document.getElementById('clearFiltersBtn');
 const statsSection = document.getElementById('statsSection');
 
 async function fetchProducts() {
+    productsContainer.innerHTML = `<div class="loading-state">Loading products...</div>`;
     const search = searchInput.value.trim();
     const category = categorySelect.value;
     const inStock = inStockCheckbox.checked;
@@ -60,6 +61,9 @@ function renderProducts(products) {
 }
 
 async function fetchProductDetail(id) {
+  productDetail.innerHTML = `
+    <div class="detail-placeholder">Loading product detail...</div>
+  `;
     try {
         const response = await fetch(`/api/products/${id}`);
         const product = await response.json();
@@ -133,6 +137,11 @@ function clearFilters() {
 }
 
 async function fetchStats() {
+  statsSection.innerHTML = `
+    <div class="stat-card"><span class="stat-label">Total Products</span><span class="stat-value">...</span></div>
+    <div class="stat-card"><span class="stat-label">Low Stock</span><span class="stat-value">...</span></div>
+    <div class="stat-card"><span class="stat-label">Average Price</span><span class="stat-value">...</span></div>
+  `;
     try {
         const response = await fetch('/api/stats');
         const stats = await response.json();

@@ -341,6 +341,14 @@ body {
   color: var(--primary);
 }
 
+.loading-state {
+  padding: 20px;
+  color: var(--muted);
+  background: #f8fbff;
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+}
+
 @media (max-width: 900px) {
   .content {
     grid-template-columns: 1fr;
