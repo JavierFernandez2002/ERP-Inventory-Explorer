@@ -7,6 +7,7 @@ const sortSelect = document.getElementById('sortSelect');
 const inStockCheckbox = document.getElementById('inStockCheckbox');
 const applyFiltersBtn = document.getElementById('applyFiltersBtn');
 const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+const statsSection = document.getElementById('statsSection');
 
 async function fetchProducts() {
     const search = searchInput.value.trim();
@@ -131,8 +132,38 @@ function clearFilters() {
     fetchProducts();
 }
 
+async function fetchStats() {
+    try {
+        const response = await fetch('/api/stats');
+        const stats = await response.json();
+
+        renderStats(stats);
+    } catch (error) {
+        console.error('Error fetching stats:', error);
+    }
+}
+
+function renderStats(stats) {
+    statsSection.innerHTML = `
+        <div class="stats-card">
+            <span class="stats-label">Total Products</span>
+            <span class="stats-value">${stats.totalProducts}</span>
+        </div>
+        <div class="stats-card">
+            <span class="stats-label">Low Stock</span>
+            <span class="stats-value">${stats.lowStockProducts}</span>
+        </div>
+        <div class="stats-card">
+            <span class="stats-label">Average Price</span>
+            <span class="stats-value">$${stats.averagePrice}</span>
+        </div>
+    `;
+}
+
+
 applyFiltersBtn.addEventListener('click', fetchProducts);
 clearFiltersBtn.addEventListener('click', clearFilters);
 
-// Initial fetch of products
+// Initial fetchs
+fetchStats();
 fetchProducts();

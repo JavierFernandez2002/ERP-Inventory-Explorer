@@ -64,7 +64,7 @@ body {
 
 .filters input,
 .filters select {
-  min-width: 180px;
+  /* min-width: 180px; */
   padding: 12px 14px;
   border-radius: 12px;
   border: 1px solid var(--border);
@@ -308,6 +308,39 @@ body {
   color: var(--muted);
 }
 
+
+.stats-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stats-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stats-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+} 
+
+.stats-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
 @media (max-width: 900px) {
   .content {
     grid-template-columns: 1fr;
@@ -326,5 +359,9 @@ body {
   .filters select,
   .filters button {
     width: 100%;
+  }
+
+  .stats-section {
+    grid-template-columns: 1fr;
   }
 }
