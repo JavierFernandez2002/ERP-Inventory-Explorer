@@ -29,6 +29,9 @@ async function fetchProducts() {
         renderProducts(products);
     } catch (error) {
         console.error('Error fetching products:', error);
+        productsContainer.innerHTML = `
+      <div class="no-products">Failed to load products.</div>
+    `;
     }
 }
 
@@ -71,6 +74,10 @@ async function fetchProductDetail(id) {
         renderProductDetail(product);
     } catch (error) {
         console.error('Error fetching product detail:', error);
+
+        productDetail.innerHTML = `
+      <div class="detail-placeholder">Failed to load product detail.</div>
+    `;
     }
 }
 
@@ -149,6 +156,13 @@ async function fetchStats() {
         renderStats(stats);
     } catch (error) {
         console.error('Error fetching stats:', error);
+
+        statsSection.innerHTML = `
+      <div class="stat-card error-card">
+        <span class="stat-label">Stats</span>
+        <span class="stat-value error-text">Failed to load</span>
+      </div>
+    `;
     }
 }
 

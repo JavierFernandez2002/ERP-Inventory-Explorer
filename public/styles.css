@@ -349,6 +349,15 @@ body {
   border-radius: 14px;
 }
 
+.error-card {
+  border-color: #fecaca;
+  background: #fff7f7;
+}
+
+.error-text {
+  color: #dc2626;
+}
+
 @media (max-width: 900px) {
   .content {
     grid-template-columns: 1fr;
