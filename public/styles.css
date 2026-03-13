@@ -208,6 +208,11 @@ body {
   color: var(--warning);
 }
 
+.stock-out {
+  background: rgba(220, 38, 38, 0.12);
+  color: #dc2626;
+}
+
 .product-card button {
   margin-top: auto;
   width: 100%;

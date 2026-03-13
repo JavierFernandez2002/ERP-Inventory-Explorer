@@ -49,7 +49,7 @@
     "name": "AOC 22 inch Monitor",
     "category": "Monitors",
     "price": 180,
-    "stock": 1,
+    "stock": 0,
     "supplier": "Vision Tech",
     "countryCode": "AR"
   },
@@ -139,7 +139,7 @@
     "name": "Cisco Small Business Router",
     "category": "Networking",
     "price": 220,
-    "stock": 2,
+    "stock": 0,
     "supplier": "InfraStore",
     "countryCode": "US"
   },

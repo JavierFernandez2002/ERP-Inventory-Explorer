@@ -10,38 +10,45 @@ const clearFiltersBtn = document.getElementById('clearFiltersBtn');
 const statsSection = document.getElementById('statsSection');
 
 async function fetchProducts() {
-    productsContainer.innerHTML = `<div class="loading-state">Loading products...</div>`;
-    const search = searchInput.value.trim();
-    const category = categorySelect.value;
-    const inStock = inStockCheckbox.checked;
-    const [sortBy, order] = sortSelect.value.split('-');
+  productsContainer.innerHTML = `<div class="loading-state">Loading products...</div>`;
+  const search = searchInput.value.trim();
+  const category = categorySelect.value;
+  const inStock = inStockCheckbox.checked;
+  const [sortBy, order] = sortSelect.value.split('-');
 
-    const params = new URLSearchParams();
-    if (search) params.append('search', search);
-    if (category) params.append('category', category);
-    if (inStock) params.append('inStock', 'true');
-    if (sortBy) params.append('sortBy', sortBy);
-    if (order) params.append('order', order);
+  const params = new URLSearchParams();
+  if (search) params.append('search', search);
+  if (category) params.append('category', category);
+  if (inStock) params.append('inStock', 'true');
+  if (sortBy) params.append('sortBy', sortBy);
+  if (order) params.append('order', order);
 
-    try {
-        const response = await fetch(`/api/products?${params.toString()}`);
-        const products = await response.json();
-        renderProducts(products);
-    } catch (error) {
-        console.error('Error fetching products:', error);
-        productsContainer.innerHTML = `
+  try {
+    const response = await fetch(`/api/products?${params.toString()}`);
+    const products = await response.json();
+    renderProducts(products);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    productsContainer.innerHTML = `
       <div class="no-products">Failed to load products.</div>
     `;
-    }
+  }
 }
 
 function renderProducts(products) {
-    productsContainer.innerHTML = products
-        .map((product) => {
-            const stockClass = product.stock <= 5 ? "stock-low" : "stock-ok";
-            const stockLabel = product.stock <= 5 ? "Low stock" : "Available";
+  productsContainer.innerHTML = products
+    .map((product) => {
+      let stockClass = "stock-ok";
+      let stockLabel = `Available · ${product.stock} units`;
 
-            return `
+      if (product.stock === 0) {
+        stockClass = "stock-out";
+        stockLabel = "Out of stock";
+      } else if (product.stock <= 5) {
+        stockClass = "stock-low";
+        stockLabel = `Low stock · ${product.stock} units`;
+      }
+      return `
                 <div class="product-card">
                     <h3>${product.name}</h3>
 
@@ -59,26 +66,26 @@ function renderProducts(products) {
                 <button onclick="fetchProductDetail(${product.id})">View detail</button>
                 </div>
             `;
-        })
-        .join("");
+    })
+    .join("");
 }
 
 async function fetchProductDetail(id) {
   productDetail.innerHTML = `
     <div class="detail-placeholder">Loading product detail...</div>
   `;
-    try {
-        const response = await fetch(`/api/products/${id}`);
-        const product = await response.json();
+  try {
+    const response = await fetch(`/api/products/${id}`);
+    const product = await response.json();
 
-        renderProductDetail(product);
-    } catch (error) {
-        console.error('Error fetching product detail:', error);
+    renderProductDetail(product);
+  } catch (error) {
+    console.error('Error fetching product detail:', error);
 
-        productDetail.innerHTML = `
+    productDetail.innerHTML = `
       <div class="detail-placeholder">Failed to load product detail.</div>
     `;
-    }
+  }
 }
 
 function renderProductDetail(product) {
@@ -118,9 +125,8 @@ function renderProductDetail(product) {
         </div>
       </div>
 
-      ${
-        product.country.flag
-          ? `
+      ${product.country.flag
+      ? `
             <div class="flag-wrapper">
               <img src="${product.country.flag}" alt="Flag of ${product.country.name}" />
               <div>
@@ -129,18 +135,18 @@ function renderProductDetail(product) {
               </div>
             </div>
           `
-          : ""
-      }
+      : ""
+    }
     </div>
   `;
 }
 
 function clearFilters() {
-    searchInput.value = '';
-    categorySelect.value = '';
-    sortSelect.value = '';
-    inStockCheckbox.checked = false;
-    fetchProducts();
+  searchInput.value = '';
+  categorySelect.value = '';
+  sortSelect.value = '';
+  inStockCheckbox.checked = false;
+  fetchProducts();
 }
 
 async function fetchStats() {
@@ -149,25 +155,25 @@ async function fetchStats() {
     <div class="stat-card"><span class="stat-label">Low Stock</span><span class="stat-value">...</span></div>
     <div class="stat-card"><span class="stat-label">Average Price</span><span class="stat-value">...</span></div>
   `;
-    try {
-        const response = await fetch('/api/stats');
-        const stats = await response.json();
+  try {
+    const response = await fetch('/api/stats');
+    const stats = await response.json();
 
-        renderStats(stats);
-    } catch (error) {
-        console.error('Error fetching stats:', error);
+    renderStats(stats);
+  } catch (error) {
+    console.error('Error fetching stats:', error);
 
-        statsSection.innerHTML = `
+    statsSection.innerHTML = `
       <div class="stat-card error-card">
         <span class="stat-label">Stats</span>
         <span class="stat-value error-text">Failed to load</span>
       </div>
     `;
-    }
+  }
 }
 
 function renderStats(stats) {
-    statsSection.innerHTML = `
+  statsSection.innerHTML = `
         <div class="stats-card">
             <span class="stats-label">Total Products</span>
             <span class="stats-value">${stats.totalProducts}</span>
