@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Inventory Explorer</title>
+    <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+    <header class="header">
+        <h1>ERP Inventory Explorer</h1>
+        <p>Explore and manage your inventory with ease.</p>
+    </header>
+
+    <main class="container">
+        <section class="filters">
+            <input type="text" id="searchInput" placeholder="Search by product name..." />
+
+            <select id="categorySelect">
+                <option value=""> All Categories</option>
+                <option value="Laptops">Laptops</option>
+                <option value="Monitors">Monitors</option>
+                <option value="Networking">Networking</option>
+                <option value="Storage">Storage</option>
+                <option value="Accessories">Accessories</option>
+            </select>
+
+            <select id="sortSelect">
+                <option value="name-asc">Name (A-Z)</option>
+                <option value="name-desc">Name (Z-A)</option>
+                <option value="price-asc">Price (Low to High)</option>
+                <option value="price-desc">Price (High to Low)</option>
+            </select>
+
+            <label>
+                <input type="checkbox" id="inStockCheckbox" />
+                Show In-Stock Only
+            </label>
+
+            <button id="applyFiltersBtn">Apply Filters</button>
+            <button id="clearFiltersBtn">Clear Filters</button>
+        </section>
+
+        <section class="content">
+            <div class="products-section">
+                <h2>Products</h2>
+                <div id="productsContainer"></div>
+            </div>
+
+            <aside class="details-section">
+                <h2>Product Details</h2>
+                <div id="productDetailsContainer">
+                    <p>Select a product to see details.</p>
+                </div>
+            </aside>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
