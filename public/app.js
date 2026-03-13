@@ -89,9 +89,24 @@ async function fetchProductDetail(id) {
 }
 
 function renderProductDetail(product) {
+  let stockClass = "stock-ok";
+  let stockLabel = `Available · ${product.stock} units`;
+
+  if (product.stock === 0) {
+    stockClass = "stock-out";
+    stockLabel = "Out of stock";
+  } else if (product.stock <= 5) {
+    stockClass = "stock-low";
+    stockLabel = `Low stock · ${product.stock} units`;
+  }
+
   productDetail.innerHTML = `
     <div class="detail-card">
       <h3>${product.name}</h3>
+
+      <span class="stock-badge ${stockClass}">
+        ${stockLabel}
+      </span>
 
       <div class="detail-grid">
         <div class="detail-item">
@@ -125,18 +140,19 @@ function renderProductDetail(product) {
         </div>
       </div>
 
-      ${product.country.flag
-      ? `
+      ${
+        product.country.flag
+          ? `
             <div class="flag-wrapper">
               <img src="${product.country.flag}" alt="Flag of ${product.country.name}" />
               <div>
-                <span class="detail-label">Supplier country flag</span>
+                <span class="detail-label">Supplier Country Flag</span>
                 <span class="detail-value">${product.country.name}</span>
               </div>
             </div>
           `
-      : ""
-    }
+          : ""
+      }
     </div>
   `;
 }
