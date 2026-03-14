@@ -4,11 +4,11 @@ const {
     getInventoryStats,
 } = require('../services/products.service');
 
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+//const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Controller to get all products
 async function getProducts(req, res) {
-    await sleep(1000); // Simulate network delay
+    //await sleep(1000); // Simulate network delay
     try {
         const products = await getAllProducts(req.query);
         res.json(products);
@@ -19,7 +19,7 @@ async function getProducts(req, res) {
 }
 
 async function getProductById(req, res) {
-    await sleep(500); // Simulate network delay
+    //await sleep(500); // Simulate network delay
     try{
         const productId = Number(req.params.id);
         const product = await getProductDetail(productId);
@@ -34,7 +34,7 @@ async function getProductById(req, res) {
 }
 
 async function getStats(req, res) {
-    await sleep(1000); // Simulate network delay
+    //await sleep(1000); // Simulate network delay
     try {
         const stats = await getInventoryStats();
         res.json(stats);

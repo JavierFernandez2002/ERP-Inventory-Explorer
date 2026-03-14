@@ -194,9 +194,9 @@ function clearFilters() {
 
 async function fetchStats() {
   statsSection.innerHTML = `
-    <div class="stat-card"><span class="stat-label">Total Products</span><span class="stat-value">...</span></div>
-    <div class="stat-card"><span class="stat-label">Low Stock</span><span class="stat-value">...</span></div>
-    <div class="stat-card"><span class="stat-label">Average Price</span><span class="stat-value">...</span></div>
+    <div class="stats-card"><span class="stats-label">Total Products</span><span class="stats-value">...</span></div>
+    <div class="stats-card"><span class="stats-label">Low Stock</span><span class="stats-value">...</span></div>
+    <div class="stats-card"><span class="stats-label">Average Price</span><span class="stats-value">...</span></div>
   `;
   try {
     const response = await fetch('/api/stats');
@@ -207,9 +207,9 @@ async function fetchStats() {
     console.error('Error fetching stats:', error);
 
     statsSection.innerHTML = `
-      <div class="stat-card error-card">
-        <span class="stat-label">Stats</span>
-        <span class="stat-value error-text">Failed to load</span>
+      <div class="stats-card error-card">
+        <span class="stats-label">Stats</span>
+        <span class="stats-value error-text">Failed to load</span>
       </div>
     `;
   }
