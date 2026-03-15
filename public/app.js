@@ -72,7 +72,7 @@ function renderProducts(products) {
                 <div class="product-price">$${product.price}</div>
 
                 <span class="stock-badge ${stockClass}">
-                    ${stockLabel} · ${product.stock} units
+                    ${stockLabel}
                 </span>
 
                 <button onclick="fetchProductDetail(${product.id})">View detail</button>
@@ -223,7 +223,7 @@ function renderStats(stats) {
         </div>
         <div class="stats-card">
             <span class="stats-label">Low Stock</span>
-            <span class="stats-value">${stats.lowStockProducts}</span>
+            <span class="stats-value">${stats.lowStockCount}</span>
         </div>
         <div class="stats-card">
             <span class="stats-label">Average Price</span>
