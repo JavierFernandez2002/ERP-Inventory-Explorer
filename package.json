@@ -2,10 +2,11 @@
   "name": "erp-inventory-explorer",
   "version": "1.0.0",
   "description": "Mini ERP inventory dashboard built with Node.js, Express and vanilla JS",
-  "main": "src/server.js",
+  "main": "src/server.ts",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "node --watch src/server.js",
+    "start": "node dist/server.js",
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
     "typecheck": "tsc --noEmit",
     "test": "node --test"
   },

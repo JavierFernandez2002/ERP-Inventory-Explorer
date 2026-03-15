@@ -1,4 +1,6 @@
-async function getCountryInfo(countryCode) {
+import { CountryInfo } from "../types/product";
+
+export async function getCountryInfo(countryCode: string): Promise<CountryInfo> {
     try {
         const response = await fetch(`https://restcountries.com/v3.1/alpha/${countryCode}`);
         if (!response.ok) {
@@ -20,7 +22,3 @@ async function getCountryInfo(countryCode) {
         };
     }
 }
-
-module.exports = {
-    getCountryInfo
-};

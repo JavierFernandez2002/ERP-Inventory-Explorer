@@ -1,6 +1,6 @@
-const express = require('express');
-const path = require('path');
-const productRoutes = require('./routes/products.routes');
+import express from 'express';
+import path from 'path';
+import productRoutes from './routes/products.routes';
 
 const app = express();
 
@@ -15,4 +15,4 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..", 'public', 'index.html'));
 });
 
-module.exports = app;
+export default app;

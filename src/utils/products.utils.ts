@@ -1,4 +1,6 @@
-function searchProducts(products, search) {
+import { Product } from '../types/product';
+
+export function searchProducts(products: Product[], search?: string): Product[] {
     if (!search) return products;
 
     const lowerSearch = search.toLowerCase();
@@ -12,20 +14,23 @@ function searchProducts(products, search) {
     );
 }
 
-function filterByCategory(products, category) {
+export function filterByCategory(products: Product[], category?: string): Product[] {
     if (!category) return products;
 
     return products.filter(
         (product) => (product.category || "").toLowerCase() === (category || "").toLowerCase());
 }
 
-function filterByStock(products, inStock) {
+export function filterByStock(products: Product[], inStock?: string): Product[] {
     if (inStock !== "true") return products;
 
     return products.filter((product) => product.stock > 0);
 }
 
-function sortProducts(products, sortBy = 'name', order = 'asc') {
+export function sortProducts(
+    products: Product[], 
+    sortBy = 'name', 
+    order = 'asc'): Product[] {
     const sorted = [...products].sort((a, b) => {
         if (sortBy === 'price') {
             return a.price - b.price;
@@ -39,7 +44,7 @@ function sortProducts(products, sortBy = 'name', order = 'asc') {
     return order === 'desc' ? sorted.reverse() : sorted;
 }
 
-module.exports = {
+export default {
     searchProducts,
     filterByCategory,
     filterByStock,
