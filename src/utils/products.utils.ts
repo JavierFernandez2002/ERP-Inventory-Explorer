@@ -10,7 +10,7 @@ export function searchProducts(products: Product[], search?: string): Product[] 
 
     return products.filter(product =>
         (product.name || "").toLowerCase().includes(lowerSearch) ||
-        (product.description || "").toLowerCase().includes(lowerSearch)
+        (product.category || "").toLowerCase().includes(lowerSearch)
     );
 }
 
