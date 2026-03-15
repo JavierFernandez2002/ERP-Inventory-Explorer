@@ -1,15 +1,6 @@
-import fs  from 'fs/promises';
-import path from 'path';
-import {
-    searchProducts,
-    filterByCategory,
-    filterByStock,
-    sortProducts,
-} from '../utils/products.utils';
+import { db } from "../config/db";
 import { getCountryInfo } from "./countries.service";
 import { Product, ProductDetail } from '../types/product';
-
-const PRODUCTS_FILE = path.join(__dirname, '../..', 'data', 'products.json');
 
 interface ProductsQuery {
     search?: string;
@@ -21,38 +12,79 @@ interface ProductsQuery {
     limit?: number | string;
 }
 
-export async function readProductsFile(): Promise<Product[]> {
-    try {
-        const data = await fs.readFile(PRODUCTS_FILE, 'utf-8');
-        return JSON.parse(data) as Product[];
-    } catch (error) {
-        console.error('Error reading products file:', error);
-        throw new Error('Could not read products data');
-    }
-}
-
-
 export async function getAllProducts(query: ProductsQuery = {}) {
-    const { search, category, inStock, sortBy, order, page=1, limit=6 } = query;
-    let products = await readProductsFile();
-
-    products = searchProducts(products, search);
-    products = filterByCategory(products, category);
-    products = filterByStock(products, inStock);
-    products = sortProducts(products, sortBy, order);
-
+    const { 
+        search,
+        category, 
+        inStock, 
+        sortBy = "name", 
+        order= "asc", 
+        page=1, 
+        limit=6 
+    } = query;
+    
     const currentPage = Number(page);
     const pageSize = Number(limit);
+    const offset = (currentPage - 1) * pageSize;
 
-    const totalItems = products.length;
-    const totalPages = Math.ceil(totalItems / pageSize) || 1;
-    const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
+    const conditions: string[] = [];
+    const values: Array<string | number> = [];
+    let paramIndex = 1;
 
-    const paginatedProducts = products.slice(startIndex, endIndex);
+    if (search) {
+        conditions.push(`(LOWER(name) LIKE $${paramIndex} OR LOWER(category) LIKE $${paramIndex})`);
+        values.push(`%${search.toLowerCase()}%`);
+        paramIndex++;
+    }
+
+    if (category) {
+        conditions.push(`LOWER(category) = LOWER($${paramIndex})`);
+        values.push(category.toLowerCase());
+        paramIndex++;
+    }
+
+    if (inStock) {
+        conditions.push(`stock > 0`);
+    }
+
+    const whereClause = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
+
+    const allowedSortFields = ['name', 'price'];
+    const safeSortBy = allowedSortFields.includes(sortBy) ? sortBy : 'name';
+    const safeOrder = order.toLowerCase() === 'desc' ? 'DESC' : 'ASC';
+
+    const dataQuery = `
+    SELECT
+      id,
+      name,
+      category,
+      price::float AS price,
+      stock,
+      supplier,
+      country_code AS "countryCode"
+    FROM products
+    ${whereClause}
+    ORDER BY ${safeSortBy} ${safeOrder}
+    LIMIT $${paramIndex} OFFSET $${paramIndex + 1}
+  `;
+
+  const countQuery = `
+    SELECT COUNT(*)::int AS count FROM products
+    ${whereClause}
+  `;
+
+  const dataValues = [...values, pageSize, offset];
+
+  const [dataResult, countResult] = await Promise.all([
+    db.query(dataQuery, dataValues),
+    db.query(countQuery, values)
+  ]);
+
+  const totalItems = countResult.rows[0].count as number;
+  const totalPages = Math.ceil(totalItems / pageSize);
 
     return {
-        data: paginatedProducts,
+        data: dataResult.rows as Product[],
         pagination: {
             page: currentPage,
             limit: pageSize,
@@ -63,8 +95,23 @@ export async function getAllProducts(query: ProductsQuery = {}) {
 }
 
 export async function getProductDetail(id: number): Promise<ProductDetail | null> {
-    const products = await readProductsFile();
-    const product = products.find(p => p.id === id);
+    const result = await db.query(
+    `
+    SELECT
+      id,
+      name,
+      category,
+      price::float AS price,
+      stock,
+      supplier,
+      country_code AS "countryCode"
+    FROM products
+    WHERE id = $1
+    `,
+    [id]
+  );
+
+  const product = result.rows[0] as Product;
 
     if (!product) {
         return null;
@@ -79,16 +126,28 @@ export async function getProductDetail(id: number): Promise<ProductDetail | null
 }
 
 export async function getInventoryStats(){
-    const products = await readProductsFile();
-    const totalProducts = products.length;
-    const lowStockProducts = products.filter(p => p.stock < 5).length;
-    const totalPrice = products.reduce((sum, p) => sum + p.price, 0);
-    const averagePrice = totalProducts > 0 ? (totalPrice / totalProducts).toFixed(2) : 0;
+    const [generalResult, categoriesResult] = await Promise.all([
+        db.query(`
+            SELECT
+                COUNT(*):: int AS totalProducts,
+                COUNT(*) FILTER (WHERE stock <= 5) AS lowStockCount,
+                ROUND(AVG(price), 2)::float AS averagePrice
+            FROM products
+        `),
+        db.query(`
+            SELECT category, COUNT(*)::int AS count
+            FROM products
+            GROUP BY category
+            ORDER BY category
+            `)
+    ]);
+    const categories = categoriesResult.rows.reduce<Record<string, number>>((acc, row) => {
+        acc[row.category] = row.count;
+        return acc;
+    }, {});
 
     return {
-        totalProducts,
-        lowStockProducts,
-        totalPrice,
-        averagePrice
+        ...generalResult.rows[0],
+        productsByCategory: categories
     };
 }
